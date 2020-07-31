@@ -1,0 +1,23 @@
+{
+	"name": "string test",
+	"integerValue": 100,
+	"floatValue": 100.3,
+
+	"server": {
+		"ip": "127.0.0.1",
+		"port": 8001,
+		"poolSize": 64,
+		"allowedAddresses": [
+			"127.0.0.1", "::1"
+		]
+	},
+
+	"node": {
+		"url": "http://127.0.0.1:8003",
+		"apiToken": "some-api-access-token"
+	},
+
+	"mongodb": {
+		"url": "mongodb://user:pass@127.0.0.1:27017/sample_database?replSet=rs0"
+	}
+}
