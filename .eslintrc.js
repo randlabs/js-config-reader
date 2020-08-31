@@ -23,6 +23,7 @@ module.exports = {
 				"@typescript-eslint/no-explicit-any": "off",
 				"@typescript-eslint/interface-name-prefix": "off",
 				"@typescript-eslint/no-non-null-assertion": "off",
+				"@typescript-eslint/ban-ts-comment": "off",
 				"no-useless-constructor": "off",
 				"@typescript-eslint/no-useless-constructor": "error",
 				"@typescript-eslint/indent": [
@@ -35,9 +36,19 @@ module.exports = {
 				],
 				"@typescript-eslint/no-extra-semi": [ "error" ],
 				"@typescript-eslint/no-non-null-assertion": "off",
-				"@typescript-eslint/no-use-before-define": [ "error", { "functions": false } ],
+				"@typescript-eslint/no-use-before-define": [
+					"error",
+					{
+						"functions": false
+					}
+				],
 				"@typescript-eslint/typedef": "off",
 				"@typescript-eslint/one-line": "off",
+				"@typescript-eslint/explicit-module-boundary-types": [
+					"warn", {
+						allowArgumentsExplicitlyTypedAsAny: true,
+					}
+				]
 			},
 		}
 	],
@@ -182,7 +193,7 @@ module.exports = {
 		"no-array-constructor": "error",
 		"no-async-promise-executor": "error",
 		"no-await-in-loop": "off",
-		"no-bitwise": "error",
+		"no-bitwise": "off",
 		"no-buffer-constructor": "error",
 		"no-caller": "error",
 		"no-catch-shadow": "error",
