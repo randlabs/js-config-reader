@@ -5,11 +5,11 @@ import Ajv from "ajv";
 
 // -----------------------------------------------------------------------------
 
-export type Settings = Record<string, unknown>;
+export type DefaultSettings = Record<string, unknown>;
 
-export type LoaderCallback = (source: string) => Promise<Settings>;
+export type LoaderCallback<S = DefaultSettings> = (source: string) => Promise<S>;
 
-export type ExtendedValidatorCallback = (settings: Settings) => Promise<void>;
+export type ExtendedValidatorCallback<S = DefaultSettings> = (settings: S) => Promise<void>;
 
 export type Options = {
 	source?: string;
@@ -18,7 +18,7 @@ export type Options = {
 	loader?: LoaderCallback;
 	schema?: string|Record<string, unknown>;
 	schemaOpts?: Ajv.Options;
-	extendedValidator: ExtendedValidatorCallback;
+	extendedValidator?: ExtendedValidatorCallback;
 };
 
 export type FailedConstraint = {
@@ -39,7 +39,8 @@ export class ValidationError extends Error {
 
 // -----------------------------------------------------------------------------
 
-let settings: Settings;
+let settings: any;
+let settingsSource: string;
 
 // -----------------------------------------------------------------------------
 
@@ -58,7 +59,7 @@ let settings: Settings;
  *
  * @returns {Settings} - Loaded configuration settings.
  */
-export async function initialize(options: Options): Promise<Settings> {
+export async function initialize<S = DefaultSettings>(options: Options): Promise<S> {
 	let source: string|undefined;
 
 	if (!options) {
@@ -182,8 +183,10 @@ export async function initialize(options: Options): Promise<Settings> {
 		await options.extendedValidator(settings);
 	}
 
+	settingsSource = source;
+
 	//done
-	return settings;
+	return settings as S;
 }
 
 /**
@@ -191,6 +194,15 @@ export async function initialize(options: Options): Promise<Settings> {
  *
  * @returns {Settings} - Loaded configuration settings.
  */
-export function get(): Settings {
-	return settings;
+export function get<S = DefaultSettings>(): S {
+	return settings as S;
+}
+
+/**
+ * Retrieves the source of the loaded configuration settings.
+ *
+ * @returns {string} - The source of settings.
+ */
+export function getSource(): string {
+	return settingsSource;
 }
