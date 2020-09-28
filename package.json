@@ -29,7 +29,6 @@
 	},
 	"homepage": "https://github.com/randlabs/js-config-reader#readme.md",
 	"dependencies": {
-		"@types/ajv": "^1.0.0",
 		"@types/json5": "0.0.30",
 		"ajv": "^6.12.4",
 		"json5": "^2.1.3"
