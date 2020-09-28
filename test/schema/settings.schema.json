@@ -1,0 +1,118 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+	"$id": "http://example.com/example.json",
+	"title": "Sample.",
+	"description": "This is a sample configuration settings.",
+	"type": "object",
+	"required": [
+		"name",
+		"integerValue",
+		"floatValue",
+		"server",
+		"node",
+		"mongodb"
+	],
+	"properties": {
+		"name": {
+			"$id": "#/properties/name",
+			"title": "name",
+			"description": "A random string value.",
+			"type": "string",
+			"minLength": 1
+		},
+		"integerValue": {
+			"$id": "#/properties/integerValue",
+			"title": "integerValue",
+			"description": "A random integer value.",
+			"type": "integer"
+		},
+		"floatValue": {
+			"$id": "#/properties/floatValue",
+			"title": "floatValue",
+			"description": "A random float value.",
+			"type": "number"
+		},
+		"server": {
+			"$id": "#/properties/server",
+			"title": "Server information",
+			"description": "Server parameters the application will mount.",
+			"type": "object",
+			"required": [
+				"ip",
+				"port"
+			],
+			"properties": {
+				"ip": {
+					"$id": "#/properties/server/properties/ip",
+					"title": "Bind address",
+					"description": "The bind address to listen for incoming connections.",
+					"type": "string",
+					"anyOf": [
+						{ "format": "ipv4" },
+						{ "format": "ipv6" }
+					],
+					"default": "127.0.0.1"
+				},
+				"port": {
+					"$id": "#/properties/server/properties/port",
+					"title": "Listen port",
+					"description": "The port to use to listen for incoming connections.",
+					"type": "integer",
+					"minimum": 0,
+					"maximum": 65535
+				}
+			}
+		},
+
+		"node": {
+			"$id": "#/properties/node",
+			"title": "Algorand's Node settings",
+			"description": "Indicates the connection settings to use to connect to Algorand's Node.",
+			"type": "object",
+			"required": [
+				"url",
+				"apiToken"
+			],
+			"properties": {
+				"url": {
+					"$id": "#/properties/node/properties/url",
+					"title": "Url",
+					"description": "Specifies the node URL.",
+					"type": "string",
+					"pattern": "^https?:\\/\\/([^:/?#]+)(\\:\\d+)$"
+				},
+				"apiToken": {
+					"$id": "#/properties/node/properties/apiToken",
+					"title": "API Access Token",
+					"description": "Specifies the access token to use.",
+					"type": "string",
+					"minLength": 1
+				}
+			}
+		},
+
+		"mongodb": {
+			"$id": "#/properties/mongodb",
+			"title": "MongoDB database settings",
+			"description": "Indicates the database connection settings to use.",
+			"type": "object",
+			"required": [
+				"url"
+			],
+			"properties": {
+				"url": {
+					"$id": "#/properties/mongodb/properties/url",
+					"title": "MongoDB connection URL",
+					"description": "Indicates the connection settings to use to connect to MongoDB.",
+					"type": "string",
+					"pattern": "^mongodb:\\/\\/(([^:@]*\\:[^@]*)@)?([^:/?#]+)(\\:\\d+)?(\/[a-zA-Z0-9_]*)\\?replSet\\=\\w+",
+					"examples": [
+						"mongodb://user:pass@127.0.0.1:27017/sample_database?replSet=rs0"
+					]
+				}
+			}
+		}
+	},
+
+	"additionalProperties": true
+}
