@@ -1,30 +1,30 @@
-import path from "path";
+import Ajv from "ajv";
 import fs from "fs";
 import JSON5 from "json5";
-import Ajv from "ajv";
+import path from "path";
 
 // -----------------------------------------------------------------------------
 
 export type DefaultSettings = Record<string, unknown>;
 
-export type LoaderCallback<S = DefaultSettings> = (source: string) => Promise<S>;
+export type LoaderCallback<S> = (source: string) => Promise<S>;
 
-export type ExtendedValidatorCallback<S = DefaultSettings> = (settings: S) => Promise<void>;
+export type ExtendedValidatorCallback<S> = (settings: S) => Promise<void> | void;
 
-export type Options = {
+export interface Options<S> {
 	source?: string;
 	envVar?: string;
 	cmdLineParam?: string;
-	loader?: LoaderCallback;
-	schema?: string|Record<string, unknown>;
+	loader?: LoaderCallback<S>;
+	schema?: string | Record<string, unknown>;
 	schemaOpts?: Ajv.Options;
-	extendedValidator?: ExtendedValidatorCallback;
-};
+	extendedValidator?: ExtendedValidatorCallback<S>;
+}
 
-export type FailedConstraint = {
+export interface FailedConstraint {
 	location: string;
 	message: string;
-};
+}
 
 export class ValidationError extends Error {
 	public failures: FailedConstraint[];
@@ -52,15 +52,15 @@ let settingsSource: string;
  * @param {string} options.envVar - Environment variable name used to find the source. Optional.
  * @param {string} options.cmdLineParam - Command-line parameter to use to find the source. Optional.
  * @param {LoaderCallback} options.loader - Loader function used to load the configuration settings. Optional.
- * @param {string|Record<string, unknown>} options.schema - Schema location or JSON Schema object to validate configuration settings.
- *                                                          Optional.
+ * @param {string | Record<string, unknown>} options.schema - Schema location or JSON Schema object to validate configuration settings.
+ *                                                            Optional.
  * @param {Ajv.Options} options.schemaOpts - Additional options to pass to the JSON Schema validator. Optional.
  * @param {ExtendedValidatorCallback} options.extendedValidator - Specifies an additional settings validator. Optional.
  *
  * @returns {Settings} - Loaded configuration settings.
  */
-export async function initialize<S = DefaultSettings>(options: Options): Promise<S> {
-	let source: string|undefined;
+export async function initialize<S = DefaultSettings>(options: Options<S>): Promise<S> {
+	let source: string | undefined;
 
 	if (!options) {
 		throw new Error("Options not set");
@@ -180,7 +180,7 @@ export async function initialize<S = DefaultSettings>(options: Options): Promise
 	}
 
 	if (options.extendedValidator) {
-		await options.extendedValidator(settings);
+		await options.extendedValidator(settings as S);
 	}
 
 	settingsSource = source;
