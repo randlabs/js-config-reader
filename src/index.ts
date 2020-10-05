@@ -1,4 +1,5 @@
 import Ajv from "ajv";
+import avjDraft2019 from "ajv-formats-draft2019";
 import fs from "fs";
 import JSON5 from "json5";
 import path from "path";
@@ -161,6 +162,7 @@ export async function initialize<S = DefaultSettings>(options: Options<S>): Prom
 				format: "full"
 			}
 		});
+		avjDraft2019(ajv);
 		const validate = ajv.compile(schema);
 
 		//validate settings
@@ -179,11 +181,11 @@ export async function initialize<S = DefaultSettings>(options: Options<S>): Prom
 		}
 	}
 
+	settingsSource = source;
+
 	if (options.extendedValidator) {
 		await options.extendedValidator(settings as S);
 	}
-
-	settingsSource = source;
 
 	//done
 	return settings as S;

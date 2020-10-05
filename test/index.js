@@ -1,4 +1,4 @@
-const ConfigReader = require("../dist");
+const ConfigReader = require("../lib");
 const test = require("ava");
 const path = require("path");
 
