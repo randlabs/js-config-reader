@@ -1,6 +1,6 @@
 {
 	"name": "@randlabs/js-config-reader",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Configuration settings loader",
 	"main": "lib/index.js",
 	"types": "lib/index.d.ts",
@@ -30,16 +30,17 @@
 	"homepage": "https://github.com/randlabs/js-config-reader#readme.md",
 	"dependencies": {
 		"@types/json5": "0.0.30",
-		"ajv": "^6.12.4",
+		"ajv": "^6.12.5",
+		"ajv-formats-draft2019": "^1.4.3",
 		"json5": "^2.1.3"
 	},
 	"devDependencies": {
-		"@types/node": "^14.6.4",
+		"@types/node": "^14.11.2",
 		"@typescript-eslint/eslint-plugin": "^3.10.1",
 		"@typescript-eslint/parser": "^3.10.1",
-		"ava": "^3.12.1",
-		"eslint": "^7.8.1",
+		"ava": "^3.13.0",
+		"eslint": "^7.10.0",
 		"rimraf": "^3.0.2",
-		"typescript": "^4.0.2"
+		"typescript": "^4.0.3"
 	}
 }
