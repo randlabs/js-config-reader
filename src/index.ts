@@ -49,7 +49,8 @@ let settingsSource: string;
  * Load configuration settings from the give source and, optionally, validate them.
  *
  * @param {Options} options - Initialization options including the settings' source. Can be a filename or url depending on the used loader.
- * @param {string} options.source - Source location of the configuration settings.
+ *                            Optional.
+ * @param {string} options.source - Source location of the configuration settings. Optional.
  * @param {string} options.envVar - Environment variable name used to find the source. Optional.
  * @param {string} options.cmdLineParam - Command-line parameter to use to find the source. Optional.
  * @param {LoaderCallback} options.loader - Loader function used to load the configuration settings. Optional.
@@ -60,11 +61,16 @@ let settingsSource: string;
  *
  * @returns {Settings} - Loaded configuration settings.
  */
-export async function initialize<S = DefaultSettings>(options: Options<S>): Promise<S> {
+export async function initialize<S = DefaultSettings>(options?: Options<S>): Promise<S> {
 	let source: string | undefined;
 
-	if (!options) {
-		throw new Error("Options not set");
+	if (typeof options !== "undefined") {
+		if (typeof options !== "object" || Array.isArray(options)) {
+			throw new Error("Options not set");
+		}
+	}
+	else {
+		options = {};
 	}
 
 	// if a source was passed, use it
