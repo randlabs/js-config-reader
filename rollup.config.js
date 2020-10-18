@@ -10,7 +10,6 @@ export default [
 	{
 		input: './src/index.ts',
 		output: {
-			name: "UInt64",
 			file: pkg.main,
 			format: 'cjs',
 			sourcemap: true,
