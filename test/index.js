@@ -1,4 +1,4 @@
-const ConfigReader = require("../lib");
+const ConfigReader = require("../dist");
 const test = require("ava");
 const path = require("path");
 
@@ -18,7 +18,6 @@ test('Wellformed settings with schema', async (t) => {
 	}
 	t.pass();
 });
-
 
 test('Malformed settings with schema', async (t) => {
 	try {
