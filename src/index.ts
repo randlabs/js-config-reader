@@ -8,7 +8,7 @@ import path from "path";
 
 export type DefaultSettings = Record<string, unknown>;
 
-export type LoaderCallback<S> = (source: string) => Promise<S>;
+export type LoaderCallback = (source: string) => Promise<string>;
 
 export type ExtendedValidatorCallback<S> = (settings: S) => Promise<void> | void;
 
@@ -16,7 +16,7 @@ export interface Options<S> {
 	source?: string;
 	envVar?: string;
 	cmdLineParam?: string;
-	loader?: LoaderCallback<S>;
+	loader?: LoaderCallback;
 	schema?: string | Record<string, unknown>;
 	schemaOpts?: Ajv.Options;
 	extendedValidator?: ExtendedValidatorCallback<S>;
@@ -113,8 +113,8 @@ export async function initialize<S = DefaultSettings>(options?: Options<S>): Pro
 	}
 
 	// check for loader, if none provided, read from disk file
-	if (!options.loader) {
-		try {
+	try {
+		if (!options.loader) {
 			source = path.resolve(process.cwd(), source);
 
 			// eslint-disable-next-line global-require
@@ -127,12 +127,13 @@ export async function initialize<S = DefaultSettings>(options?: Options<S>): Pro
 				settings = JSON5.parse(contents.toString());
 			}
 		}
-		catch (err) {
-			throw new Error("Unable to load configuration.");
+		else {
+			const contents = await options.loader(source);
+			settings = JSON5.parse(contents);
 		}
 	}
-	else {
-		settings = await options.loader(source);
+	catch (err) {
+		throw new Error("Unable to load configuration [" + err.message + "].");
 	}
 
 	// validate settings against a schema if one is provided
