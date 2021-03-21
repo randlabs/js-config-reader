@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"alwaysStrict": true,
 		"declaration": true,
+		"module": "esnext",
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"forceConsistentCasingInFileNames": true,

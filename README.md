@@ -37,6 +37,7 @@ The `options` parameter is an object with the following fields:
 * `schema` - Schema location or JSON Schema object to validate configuration settings. Optional.
 * `schemaOpts` - Additional options to pass to the JSON Schema validator. Optional.
 * `extendedValidator` - Specifies an additional settings validator. Optional.
+* `usingClusters` - Prepares usage for a cluster environment. Optional.
  
 # License
 
